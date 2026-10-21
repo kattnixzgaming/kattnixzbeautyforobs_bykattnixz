@@ -47,7 +47,7 @@ class InstallerTests(unittest.TestCase):
         legacy.write_bytes(b'kattbeauty_studio_filter')
         original = installer.shutil.copy2
         def fail_new(src, dest, *args, **kwargs):
-            if Path(src) == self.source: raise OSError('simulated copy failure')
+        if Path(src).resolve() == self.source.resolve(): raise OSError('simulated copy failure')
             return original(src, dest, *args, **kwargs)
         with patch.object(installer.shutil, 'copy2', side_effect=fail_new):
             with self.assertRaises(OSError): installer.commit(self.source, self.obs, self.backup)
